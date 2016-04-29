@@ -2,18 +2,32 @@ package edu.stanford.rsl.tutorial.uz43ezas;
 
 import ij.ImageJ;
 import edu.stanford.rsl.conrad.data.numeric.Grid2D;
+import edu.stanford.rsl.conrad.data.numeric.NumericGrid;
+import edu.stanford.rsl.conrad.data.numeric.NumericPointwiseOperators;
 
 public class BIO extends Grid2D {
 
 	public BIO(int height, int width) {
 		super(height, width);
 		//this.geometricObjects();
-		this.circlefilled(250,250,200,2);
+		this.circlefilled(250,250,200,3);
 		//this.circle(250,250,300,3);
 		this.ellipse(150,170,25,2,1,1);
 		this.ellipse(350,170,25,2,1,1);
 		
 		this.ellipse(250,350,25,5,1,1);
+		spacing(1);
+	}
+	
+	public void spacing (double val) {
+		super.setSpacing(val, val);
+		double firstrow = -((this.getHeight()-1)*(val/2));
+		super.setOrigin(firstrow,firstrow);
+	}
+		
+	
+	public void origin (int height, int width) {
+		
 	}
 	
 	public void square (int x, int y, int w, int val) {
@@ -82,6 +96,11 @@ public class BIO extends Grid2D {
 		new ImageJ();
 		System.out.println("BIO");
 		BIO object = new BIO(512,512);
-		object.show();
+		object.show("First");
+		NumericPointwiseOperators.addBy(object, object);
+		NumericGrid newobject = NumericPointwiseOperators.addedBy(object, object);
+		newobject.show("second");
+		double point [] = object.indexToPhysical(0,0);
+		System.out.println(point[1]);
 	}
 }
